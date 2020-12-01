@@ -14,15 +14,21 @@ def speak(text):
 
 # Generate story using GPT2 model.
 story_gen = pipeline("text-generation", "pranavpsv/gpt2-genre-story-generator")
-input_prompt = "<BOS> <horror> In the middle of a "
+input_prompt = "<BOS> <horror> ~ In the middle of a "
 story = story_gen(input_prompt, max_length=200, do_sample=True,
                repetition_penalty=1.1, temperature=1.2, 
                top_p=0.95, top_k=50)
 
-print(story[0]["generated_text"])
 
-storyString = ''.join(story[0]["generated_text"])
+# Convert the list of dictionaries into a string.
+splitSroryString = story[0]["generated_text"].split('~')
 
+# Story part of the string.
+storyString = splitSroryString[1]
+
+print(storyString)
+
+# Generate the text file. 
 with open('sample.txt', 'w') as text_file:
     text_file.write(str(storyString))
 
